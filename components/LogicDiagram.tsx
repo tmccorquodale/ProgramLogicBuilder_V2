@@ -103,7 +103,7 @@ export const LogicDiagram = forwardRef<LogicDiagramHandle, LogicDiagramProps>(({
               {data.programName || 'Logic Model'}
             </h3>
             <p className="text-xl font-medium opacity-90 max-w-5xl mx-auto italic leading-relaxed">
-              Goal: {data.goal || 'Not Defined'}
+              {data.goal || 'Not Defined'}
             </p>
           </div>
 
