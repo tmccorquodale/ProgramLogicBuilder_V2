@@ -8,7 +8,7 @@ export const Background: React.FC = () => {
       <div 
         className="absolute inset-0 opacity-20 pointer-events-none"
         style={{ 
-          backgroundImage: 'url("/background.svg")',
+          backgroundImage: 'url("background.svg")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat'
