@@ -1,7 +1,7 @@
 import React, { useRef, useState, useImperativeHandle, forwardRef } from 'react';
 import { toPng } from 'html-to-image';
 import { jsPDF } from 'jspdf';
-import { ProgramLogic, Aim } from '../src/types';
+import { ProgramLogic, Aim, Need } from '../types';
 
 interface LogicDiagramProps {
   data: ProgramLogic;
@@ -131,9 +131,9 @@ export const LogicDiagram = forwardRef<LogicDiagramHandle, LogicDiagramProps>(({
               const rows: React.ReactNode[] = [];
               let currentRow = 2; // Start after headers
 
-              data.needs.forEach((need) => {
+              data.needs.forEach((need: Need) => {
                 // Calculate total rows for this need
-                const needRows = need.aims.length === 0 ? 1 : need.aims.reduce((acc, aim) => {
+                const needRows = need.aims.length === 0 ? 1 : need.aims.reduce((acc: number, aim: Aim) => {
                   const maxItems = Math.max(
                     1,
                     aim.activities.length,
@@ -168,7 +168,7 @@ export const LogicDiagram = forwardRef<LogicDiagramHandle, LogicDiagramProps>(({
                   );
                   currentRow++;
                 } else {
-                  need.aims.forEach((aim) => {
+                  need.aims.forEach((aim: Aim) => {
                     const aimMaxItems = Math.max(
                       1,
                       aim.activities.length,
