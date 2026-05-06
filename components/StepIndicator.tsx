@@ -1,5 +1,5 @@
 import React from 'react';
-import { StepType } from '../src/types';
+import { StepType } from '../types';
 
 interface StepIndicatorProps {
   currentStep: StepType;
