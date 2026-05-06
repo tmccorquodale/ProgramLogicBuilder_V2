@@ -12,7 +12,7 @@ export const GoalStep: React.FC<GoalStepProps> = ({ programName, setProgramName,
   return (
     <div className="bg-white/80 backdrop-blur-md p-8 rounded-lg border border-nsw-grey-300 shadow-sm space-y-8 fade-in">
       <div className="space-y-4">
-        <label className="block text-sm font-black text-nsw-blue uppercase tracking-widest">
+        <label className="block text-lg font-black text-nsw-blue uppercase tracking-widest">
           Program Name
         </label>
         <input
@@ -20,7 +20,7 @@ export const GoalStep: React.FC<GoalStepProps> = ({ programName, setProgramName,
           value={programName}
           onChange={(e) => setProgramName(e.target.value)}
           placeholder="Enter the name of your program..."
-          className="w-full text-2xl font-black p-4 border border-nsw-grey-300 rounded-md focus:border-nsw-blue focus:ring-1 focus:ring-nsw-blue outline-none transition-all"
+          className="w-full text-lg p-4 border border-nsw-grey-300 rounded-md focus:border-nsw-blue focus:ring-1 focus:ring-nsw-blue outline-none transition-all"
         />
         <p className="text-sm text-nsw-grey-400 font-medium">
           A clear, concise name for the program or initiative.
@@ -28,17 +28,17 @@ export const GoalStep: React.FC<GoalStepProps> = ({ programName, setProgramName,
       </div>
 
       <div className="space-y-4 pt-4 border-t border-nsw-grey-200">
-        <label className="block text-sm font-black text-nsw-blue uppercase tracking-widest">
+        <label className="block text-lg font-black text-nsw-blue uppercase tracking-widest">
           Program Goal
         </label>
         <textarea
           value={goal}
           onChange={(e) => setGoal(e.target.value)}
           placeholder="What is the primary overarching goal of this program?"
-          className="w-full h-40 text-lg font-bold p-4 border border-nsw-grey-300 rounded-md focus:border-nsw-blue focus:ring-1 focus:ring-nsw-blue outline-none transition-all resize-none"
+          className="w-full h-40 text-lg p-4 border border-nsw-grey-300 rounded-md focus:border-nsw-blue focus:ring-1 focus:ring-nsw-blue outline-none transition-all resize-none"
         />
         <p className="text-sm text-nsw-grey-400 font-medium leading-relaxed">
-          The goal should describe the ultimate intended benefit. Example: "To improve patient outcomes by streamlining clinical trial management across NSW health facilities."
+          In one sentence, what is the ultimate goal of this program? (e.g. to increase the capacity and capability of the NSW Clinical Trials workforce)
         </p>
       </div>
     </div>
