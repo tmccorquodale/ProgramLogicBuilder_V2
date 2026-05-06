@@ -15,6 +15,9 @@ export const GoalStep: React.FC<GoalStepProps> = ({ programName, setProgramName,
         <label className="block text-lg font-black text-nsw-blue uppercase tracking-widest">
           Program Name
         </label>
+        <p className="text-sm text-nsw-grey-400 font-medium">
+          A clear, concise name for the program or initiative.
+        </p>
         <input
           type="text"
           value={programName}
@@ -22,24 +25,21 @@ export const GoalStep: React.FC<GoalStepProps> = ({ programName, setProgramName,
           placeholder="Enter the name of your program..."
           className="w-full text-lg p-4 border border-nsw-grey-300 rounded-md focus:border-nsw-blue focus:ring-1 focus:ring-nsw-blue outline-none transition-all"
         />
-        <p className="text-sm text-nsw-grey-400 font-medium">
-          A clear, concise name for the program or initiative.
-        </p>
       </div>
 
       <div className="space-y-4 pt-4 border-t border-nsw-grey-200">
         <label className="block text-lg font-black text-nsw-blue uppercase tracking-widest">
           Program Goal
         </label>
+        <p className="text-sm text-nsw-grey-400 font-medium leading-relaxed">
+          In one sentence, what is the ultimate goal of this program? (e.g. to increase the capacity and capability of the NSW Clinical Trials workforce)
+        </p>
         <textarea
           value={goal}
           onChange={(e) => setGoal(e.target.value)}
           placeholder="What is the primary overarching goal of this program?"
           className="w-full h-40 text-lg p-4 border border-nsw-grey-300 rounded-md focus:border-nsw-blue focus:ring-1 focus:ring-nsw-blue outline-none transition-all resize-none"
         />
-        <p className="text-sm text-nsw-grey-400 font-medium leading-relaxed">
-          In one sentence, what is the ultimate goal of this program? (e.g. to increase the capacity and capability of the NSW Clinical Trials workforce)
-        </p>
       </div>
     </div>
   );
