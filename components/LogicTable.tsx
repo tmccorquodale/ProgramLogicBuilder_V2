@@ -21,7 +21,7 @@ export const LogicTable: React.FC<LogicTableProps> = ({ data, onJumpTo }) => {
                   <button onClick={() => onJumpTo('GOAL')} className="bg-white/10 hover:bg-white/20 text-[10px] px-3 py-1.5 rounded-md border border-white/20 uppercase font-bold tracking-wider transition-all">Edit Details</button>
                 </div>
                 <p className="text-sm font-medium opacity-90 leading-relaxed max-w-5xl italic">
-                   Goal: {data.goal || 'NOT DEFINED'}
+                   {data.goal || 'NOT DEFINED'}
                 </p>
               </div>
             </th>
