@@ -6,50 +6,37 @@ interface StepIndicatorProps {
   onStepClick: (step: StepType) => void;
 }
 
-const steps: { key: StepType; label: string }[] = [
-  { key: 'GOAL', label: '1. Goal' },
-  { key: 'NEEDS', label: '2. Needs' },
-  { key: 'AIMS', label: '3. Aims' },
-  { key: 'DETAILS', label: '4. Logic Details' },
-  { key: 'REVIEW', label: '5. Review' },
+const STEPS: { id: StepType; label: string; icon: string }[] = [
+  { id: 'GOAL', label: 'Goal', icon: 'flag' },
+  { id: 'NEEDS', label: 'Needs', icon: 'crisis_alert' },
+  { id: 'AIMS', label: 'Aims', icon: 'target' },
+  { id: 'DETAILS', label: 'Details', icon: 'list_alt' },
+  { id: 'REVIEW', label: 'Review', icon: 'preview' }
 ];
 
 export const StepIndicator: React.FC<StepIndicatorProps> = ({ currentStep, onStepClick }) => {
   return (
-    <div className="flex items-center justify-between mb-16 px-4 max-w-4xl mx-auto overflow-x-auto pt-6 pb-10 no-scrollbar">
-      {steps.map((step, index) => {
-        const stepIndex = steps.findIndex(s => s.key === currentStep);
-        const isActive = step.key === currentStep;
-        const isPast = stepIndex > index;
+    <div className="flex justify-between items-center bg-white/80 backdrop-blur-md p-4 rounded-md border border-nsw-grey-300 shadow-sm overflow-x-auto">
+      {STEPS.map((step, index) => {
+        const isActive = currentStep === step.id;
+        const iconColor = isActive ? 'bg-nsw-blue text-white' : 'bg-nsw-grey-100 text-nsw-grey-400';
+        const labelColor = isActive ? 'text-nsw-blue font-black' : 'text-nsw-grey-400 font-bold';
 
         return (
-          <React.Fragment key={step.key}>
-            <button 
-              onClick={() => onStepClick(step.key)}
-              className="flex flex-col items-center group relative transition-all duration-300 outline-none focus:ring-0"
-              aria-label={`Navigate to ${step.label}`}
+          <React.Fragment key={step.id}>
+            <button
+              onClick={() => onStepClick(step.id)}
+              className="flex flex-col items-center gap-2 group transition-all min-w-[80px]"
             >
-              <div className={`w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:scale-110 active:scale-95 ${
-                isActive ? 'bg-nsw-blue border-nsw-blue text-white ring-4 ring-nsw-teal/30' : 
-                isPast ? 'bg-nsw-teal border-nsw-teal text-white hover:bg-nsw-blue hover:text-white' : 
-                'bg-white border-nsw-grey-300 text-nsw-grey-400 group-hover:border-nsw-blue group-hover:text-nsw-blue'
-              }`}>
-                {isPast ? (
-                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                  </svg>
-                ) : (
-                  <span className="font-black text-sm">{index + 1}</span>
-                )}
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all shadow-sm ${iconColor} group-hover:scale-110`}>
+                <span className="material-symbols-outlined text-xl">{step.icon}</span>
               </div>
-              <span className={`absolute -bottom-7 text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-colors duration-300 ${
-                isActive ? 'text-nsw-blue font-bold' : isPast ? 'text-nsw-teal font-bold' : 'text-nsw-grey-400 group-hover:text-nsw-blue'
-              }`}>
-                {step.label.split('. ')[1]}
+              <span className={`text-[10px] uppercase tracking-widest ${labelColor}`}>
+                {step.label}
               </span>
             </button>
-            {index < steps.length - 1 && (
-              <div className={`flex-1 h-0.5 mx-4 min-w-[30px] transition-colors duration-700 ${isPast ? 'bg-nsw-teal' : 'bg-nsw-grey-300'}`} />
+            {index < STEPS.length - 1 && (
+              <div className="flex-1 h-[2px] bg-nsw-grey-200 mx-4 mt-[-20px] hidden sm:block"></div>
             )}
           </React.Fragment>
         );
