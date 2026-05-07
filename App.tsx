@@ -326,6 +326,15 @@ const App: React.FC = () => {
             </div>
 
             <div className="flex items-center gap-3">
+              <a 
+                href="https://www.health.nsw.gov.au/research/Pages/program-logic.aspx"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-white hover:bg-nsw-blue/5 border border-nsw-blue text-nsw-blue px-4 py-2 rounded-md text-[11px] font-black uppercase tracking-wider transition-all flex items-center gap-2 no-underline"
+              >
+                <span className="material-symbols-outlined text-sm">help</span>
+                Get help on Program Logic Models
+              </a>
               <label className="cursor-pointer bg-nsw-grey-100 hover:bg-nsw-grey-200 px-4 py-2 rounded-md border border-nsw-grey-300 text-[11px] font-black uppercase tracking-wider transition-all flex items-center gap-2 text-nsw-blue">
                 <span className="material-symbols-outlined text-sm">upload_file</span>
                 Import Excel
