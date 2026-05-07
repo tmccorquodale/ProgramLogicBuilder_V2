@@ -18,9 +18,20 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({ currentStep, onSte
   return (
     <div className="flex justify-between items-center bg-white/80 backdrop-blur-md p-4 rounded-md border border-nsw-grey-300 shadow-sm overflow-x-auto">
       {STEPS.map((step, index) => {
+        const currentIndex = STEPS.findIndex(s => s.id === currentStep);
         const isActive = currentStep === step.id;
-        const iconColor = isActive ? 'bg-nsw-blue text-white' : 'bg-nsw-grey-100 text-nsw-grey-400';
-        const labelColor = isActive ? 'text-nsw-blue font-black' : 'text-nsw-grey-400 font-bold';
+        const isCompleted = index < currentIndex;
+        
+        let iconColor = 'bg-nsw-grey-100 text-nsw-grey-400';
+        let labelColor = 'text-nsw-grey-400 font-bold';
+        
+        if (isActive) {
+          iconColor = 'bg-nsw-blue text-white';
+          labelColor = 'text-nsw-blue font-black';
+        } else if (isCompleted) {
+          iconColor = 'bg-nsw-teal text-white';
+          labelColor = 'text-nsw-teal font-bold';
+        }
 
         return (
           <React.Fragment key={step.id}>
@@ -36,7 +47,7 @@ export const StepIndicator: React.FC<StepIndicatorProps> = ({ currentStep, onSte
               </span>
             </button>
             {index < STEPS.length - 1 && (
-              <div className="flex-1 h-[2px] bg-nsw-grey-200 mx-4 mt-[-20px] hidden sm:block"></div>
+              <div className={`flex-1 h-[2px] mx-4 mt-[-20px] hidden sm:block transition-all ${isCompleted ? 'bg-nsw-teal' : 'bg-nsw-grey-200'}`}></div>
             )}
           </React.Fragment>
         );
