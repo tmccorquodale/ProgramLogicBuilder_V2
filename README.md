@@ -1,7 +1,7 @@
 # NSW Health Program Logic Builder
 
 ## Objective
-The NSW Health Program Logic Builder is a specialized tool designed for the **Office for Health and Medical Research** to streamline the creation, visualization, and management of program logic models. It provides a structured, step-by-step workflow for health professionals to define program goals, identify community needs, establish strategic aims, and detail specific activities and outcomes.
+The NSW Health Program Logic Builder is a specialized tool designed for the NSW Health **Office for Health and Medical Research** to streamline the creation, visualization, and management of program logic models. It provides a structured, step-by-step workflow for health professionals to define program goals, identify community needs, establish strategic aims, and detail specific activities and outcomes.
 
 The tool aims to bridge the gap between abstract planning and structured reporting by allowing users to export their logic models directly to Excel or visualize them through interactive diagrams and tables.
 
@@ -47,3 +47,6 @@ The Logic Diagram is designed for a widescreen "dashboard" feel. When adding new
 
 ### 5. NSW Design System
 While not using the full NPM package for performance reasons, the UI mimics the **NSW Design System** (typography, border-tops, and blue/red accents). Refer to the [Digital NSW Design System](https://www.digital.nsw.gov.au/design-system) for further UI inspiration.
+
+### 6. Contact
+This tool was designed by Thomas McCorquodale (Data Manager, OHMR) to assist teams with stress-free generation of Program Logic Models. You can reach out to him at mailto:Thomas.McCorquodale@health.nsw.gov.au for further information. 
