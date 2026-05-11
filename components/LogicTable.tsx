@@ -69,31 +69,31 @@ export const LogicTable: React.FC<LogicTableProps> = ({ data, onJumpTo }) => {
                   </td>
                   <td className="p-4 border-r border-nsw-grey-300 align-top bg-white relative">
                      <ul className="list-disc ml-4 space-y-1 text-nsw-black font-medium">
-                       {aim.activities.map((it: string, i: number) => <li key={i}>{it}</li>)}
+                       {aim.activities.map((it: any, i: number) => <li key={i}>{it.text}</li>)}
                      </ul>
                      <button onClick={() => onJumpTo('DETAILS', need.id, aim.id)} className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 bg-nsw-blue-light text-nsw-blue p-1 rounded-md border border-nsw-blue/10 hover:bg-nsw-blue hover:text-white transition-all shadow-sm">✏️</button>
                   </td>
                   <td className="p-4 border-r border-nsw-grey-300 align-top bg-white relative">
                      <ul className="list-disc ml-4 space-y-1 text-nsw-black font-medium">
-                       {aim.inputs.map((it: string, i: number) => <li key={i}>{it}</li>)}
+                       {aim.inputs.map((it: any, i: number) => <li key={i}>{it.text}</li>)}
                      </ul>
                      <button onClick={() => onJumpTo('DETAILS', need.id, aim.id)} className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 bg-nsw-blue-light text-nsw-blue p-1 rounded-md border border-nsw-blue/10 hover:bg-nsw-blue hover:text-white transition-all shadow-sm">✏️</button>
                   </td>
                   <td className="p-4 border-r border-nsw-grey-300 align-top bg-white relative">
                      <ul className="list-disc ml-4 space-y-1 text-nsw-black font-medium">
-                       {aim.outputs.map((it: string, i: number) => <li key={i}>{it}</li>)}
+                       {aim.outputs.map((it: any, i: number) => <li key={i}>{it.text}</li>)}
                      </ul>
                      <button onClick={() => onJumpTo('DETAILS', need.id, aim.id)} className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 bg-nsw-blue-light text-nsw-blue p-1 rounded-md border border-nsw-blue/10 hover:bg-nsw-blue hover:text-white transition-all shadow-sm">✏️</button>
                   </td>
                   <td className="p-4 border-r border-nsw-grey-300 align-top bg-nsw-blue-light/20 relative">
                      <ul className="list-disc ml-4 space-y-1 text-nsw-blue font-bold">
-                       {aim.shortTermImpacts.map((it: string, i: number) => <li key={i}>{it}</li>)}
+                       {aim.shortTermImpacts.map((it: any, i: number) => <li key={i}>{it.text}</li>)}
                      </ul>
                      <button onClick={() => onJumpTo('DETAILS', need.id, aim.id)} className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 bg-nsw-blue text-white p-1 rounded-md transition-all shadow-md">✏️</button>
                   </td>
                   <td className="p-4 align-top bg-nsw-blue-light/20 relative">
                      <ul className="list-disc ml-4 space-y-1 text-nsw-blue font-bold">
-                       {aim.longTermImpacts.map((it: string, i: number) => <li key={i}>{it}</li>)}
+                       {aim.longTermImpacts.map((it: any, i: number) => <li key={i}>{it.text}</li>)}
                      </ul>
                      <button onClick={() => onJumpTo('DETAILS', need.id, aim.id)} className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 bg-nsw-blue text-white p-1 rounded-md transition-all shadow-md">✏️</button>
                   </td>
