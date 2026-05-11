@@ -108,14 +108,20 @@ const App: React.FC = () => {
           }
 
           if (aimTxt) {
+            const splitItems = (txt: any) => {
+              if (!txt) return [];
+              const lines = typeof txt === 'string' ? txt.split('\n') : [txt.toString()];
+              return lines.map((l: string) => ({ id: crypto.randomUUID(), text: l.replace(/^•\s*/, ''), span: 1 }));
+            };
+
             targetNeed.aims.push({
               id: crypto.randomUUID(),
               description: aimTxt,
-              activities: actTxt ? (typeof actTxt === 'string' ? actTxt.split('\n') : [actTxt.toString()]) : [],
-              inputs: inpTxt ? (typeof inpTxt === 'string' ? inpTxt.split('\n') : [inpTxt.toString()]) : [],
-              outputs: outTxt ? (typeof outTxt === 'string' ? outTxt.split('\n') : [outTxt.toString()]) : [],
-              shortTermImpacts: shortTxt ? (typeof shortTxt === 'string' ? shortTxt.split('\n') : [shortTxt.toString()]) : [],
-              longTermImpacts: longTxt ? (typeof longTxt === 'string' ? longTxt.split('\n') : [longTxt.toString()]) : []
+              activities: splitItems(actTxt),
+              inputs: splitItems(inpTxt),
+              outputs: splitItems(outTxt),
+              shortTermImpacts: splitItems(shortTxt),
+              longTermImpacts: splitItems(longTxt)
             });
           }
         }
@@ -182,11 +188,11 @@ const App: React.FC = () => {
             const row = worksheet.addRow([
               aIdx === 0 ? need.description : '',
               aim.description,
-              aim.activities.map(a => `• ${a}`).join('\n'),
-              aim.inputs.map(i => `• ${i}`).join('\n'),
-              aim.outputs.map(o => `• ${o}`).join('\n'),
-              aim.shortTermImpacts.map(s => `• ${s}`).join('\n'),
-              aim.longTermImpacts.map(l => `• ${l}`).join('\n')
+              aim.activities.map(a => `• ${a.text}`).join('\n'),
+              aim.inputs.map(i => `• ${i.text}`).join('\n'),
+              aim.outputs.map(o => `• ${o.text}`).join('\n'),
+              aim.shortTermImpacts.map(s => `• ${s.text}`).join('\n'),
+              aim.longTermImpacts.map(l => `• ${l.text}`).join('\n')
             ]);
 
             row.alignment = { vertical: 'top', wrapText: true, indent: 1 };
@@ -290,7 +296,7 @@ const App: React.FC = () => {
     }
   };
 
-  const handleCellUpdate = (needId: string, aimId: string, field: keyof Aim, value: string | string[]) => {
+  const handleCellUpdate = (needId: string, aimId: string, field: keyof Aim, value: any) => {
     updateLogic(l => ({
       ...l,
       needs: l.needs.map(n => n.id === needId ? {
@@ -333,7 +339,7 @@ const App: React.FC = () => {
                 className="bg-white hover:bg-nsw-blue/5 border border-nsw-blue text-nsw-blue px-4 py-2 rounded-md text-[11px] font-black uppercase tracking-wider transition-all flex items-center gap-2 no-underline"
               >
                 <span className="material-symbols-outlined text-sm">help</span>
-                Get help with Program Logic Models
+                Get help on Program Logic Models
               </a>
               <label className="cursor-pointer bg-nsw-grey-100 hover:bg-nsw-grey-200 px-4 py-2 rounded-md border border-nsw-grey-300 text-[11px] font-black uppercase tracking-wider transition-all flex items-center gap-2 text-nsw-blue">
                 <span className="material-symbols-outlined text-sm">upload_file</span>
@@ -472,47 +478,47 @@ const App: React.FC = () => {
                     <ListEditor
                       title="Activities"
                       description="What activities need to be undertaken to deliver the outputs? (e.g. develop fact sheets, develop and promote training for clinical trial managers, etc)"
-                      items={currentAim.activities.map((t, i) => ({ id: i.toString(), text: t }))}
+                      items={currentAim.activities}
                       typeLabel="Activity"
-                      onAdd={(t) => handleCellUpdate(selectedNeedId!, selectedAimId!, 'activities', [...currentAim.activities, t])}
-                      onRemove={(i) => handleCellUpdate(selectedNeedId!, selectedAimId!, 'activities', currentAim.activities.filter((_, idx) => idx !== parseInt(i)))}
-                      onUpdate={(i, t) => handleCellUpdate(selectedNeedId!, selectedAimId!, 'activities', currentAim.activities.map((old, idx) => idx === parseInt(i) ? t : old))}
+                      onAdd={(t) => handleCellUpdate(selectedNeedId!, selectedAimId!, 'activities', [...currentAim.activities, { id: crypto.randomUUID(), text: t, span: 1 }])}
+                      onRemove={(id) => handleCellUpdate(selectedNeedId!, selectedAimId!, 'activities', currentAim.activities.filter(item => item.id !== id))}
+                      onUpdate={(id, t) => handleCellUpdate(selectedNeedId!, selectedAimId!, 'activities', currentAim.activities.map(old => old.id === id ? { ...old, text: t } : old))}
                     />
                     <ListEditor
                       title="Inputs"
                       description="What resources are needed to conduct the activities? (e.g. staff, funding, partnerships, etc)"
-                      items={currentAim.inputs.map((t, i) => ({ id: i.toString(), text: t }))}
+                      items={currentAim.inputs}
                       typeLabel="Input"
-                      onAdd={(t) => handleCellUpdate(selectedNeedId!, selectedAimId!, 'inputs', [...currentAim.inputs, t])}
-                      onRemove={(i) => handleCellUpdate(selectedNeedId!, selectedAimId!, 'inputs', currentAim.inputs.filter((_, idx) => idx !== parseInt(i)))}
-                      onUpdate={(i, t) => handleCellUpdate(selectedNeedId!, selectedAimId!, 'inputs', currentAim.inputs.map((old, idx) => idx === parseInt(i) ? t : old))}
+                      onAdd={(t) => handleCellUpdate(selectedNeedId!, selectedAimId!, 'inputs', [...currentAim.inputs, { id: crypto.randomUUID(), text: t, span: 1 }])}
+                      onRemove={(id) => handleCellUpdate(selectedNeedId!, selectedAimId!, 'inputs', currentAim.inputs.filter(item => item.id !== id))}
+                      onUpdate={(id, t) => handleCellUpdate(selectedNeedId!, selectedAimId!, 'inputs', currentAim.inputs.map(old => old.id === id ? { ...old, text: t } : old))}
                     />
                     <ListEditor
                       title="Outputs"
                       description="What products and services need to be delivered to achieve the impacts? (e.g. fact sheets distributed, clinical trial managers attend training, etc)"
-                      items={currentAim.outputs.map((t, i) => ({ id: i.toString(), text: t }))}
+                      items={currentAim.outputs}
                       typeLabel="Output"
-                      onAdd={(t) => handleCellUpdate(selectedNeedId!, selectedAimId!, 'outputs', [...currentAim.outputs, t])}
-                      onRemove={(i) => handleCellUpdate(selectedNeedId!, selectedAimId!, 'outputs', currentAim.outputs.filter((_, idx) => idx !== parseInt(i)))}
-                      onUpdate={(i, t) => handleCellUpdate(selectedNeedId!, selectedAimId!, 'outputs', currentAim.outputs.map((old, idx) => idx === parseInt(i) ? t : old))}
+                      onAdd={(t) => handleCellUpdate(selectedNeedId!, selectedAimId!, 'outputs', [...currentAim.outputs, { id: crypto.randomUUID(), text: t, span: 1 }])}
+                      onRemove={(id) => handleCellUpdate(selectedNeedId!, selectedAimId!, 'outputs', currentAim.outputs.filter(item => item.id !== id))}
+                      onUpdate={(id, t) => handleCellUpdate(selectedNeedId!, selectedAimId!, 'outputs', currentAim.outputs.map(old => old.id === id ? { ...old, text: t } : old))}
                     />
                     <ListEditor
                       title="Short Term Impacts"
                       description="What short-term outcomes are required in order to achieve the long-term outcomes, and demonstrate measurable progress against your activities?"
-                      items={currentAim.shortTermImpacts.map((t, i) => ({ id: i.toString(), text: t }))}
+                      items={currentAim.shortTermImpacts}
                       typeLabel="Impact"
-                      onAdd={(t) => handleCellUpdate(selectedNeedId!, selectedAimId!, 'shortTermImpacts', [...currentAim.shortTermImpacts, t])}
-                      onRemove={(i) => handleCellUpdate(selectedNeedId!, selectedAimId!, 'shortTermImpacts', currentAim.shortTermImpacts.filter((_, idx) => idx !== parseInt(i)))}
-                      onUpdate={(i, t) => handleCellUpdate(selectedNeedId!, selectedAimId!, 'shortTermImpacts', currentAim.shortTermImpacts.map((old, idx) => idx === parseInt(i) ? t : old))}
+                      onAdd={(t) => handleCellUpdate(selectedNeedId!, selectedAimId!, 'shortTermImpacts', [...currentAim.shortTermImpacts, { id: crypto.randomUUID(), text: t, span: 1 }])}
+                      onRemove={(id) => handleCellUpdate(selectedNeedId!, selectedAimId!, 'shortTermImpacts', currentAim.shortTermImpacts.filter(item => item.id !== id))}
+                      onUpdate={(id, t) => handleCellUpdate(selectedNeedId!, selectedAimId!, 'shortTermImpacts', currentAim.shortTermImpacts.map(old => old.id === id ? { ...old, text: t } : old))}
                     />
                     <ListEditor
                       title="Long Term Impacts"
                       description="What are the long-term outcomes of the program, and demonstrate measurable progress against your aims?"
-                      items={currentAim.longTermImpacts.map((t, i) => ({ id: i.toString(), text: t }))}
+                      items={currentAim.longTermImpacts}
                       typeLabel="Impact"
-                      onAdd={(t) => handleCellUpdate(selectedNeedId!, selectedAimId!, 'longTermImpacts', [...currentAim.longTermImpacts, t])}
-                      onRemove={(i) => handleCellUpdate(selectedNeedId!, selectedAimId!, 'longTermImpacts', currentAim.longTermImpacts.filter((_, idx) => idx !== parseInt(i)))}
-                      onUpdate={(i, t) => handleCellUpdate(selectedNeedId!, selectedAimId!, 'longTermImpacts', currentAim.longTermImpacts.map((old, idx) => idx === parseInt(i) ? t : old))}
+                      onAdd={(t) => handleCellUpdate(selectedNeedId!, selectedAimId!, 'longTermImpacts', [...currentAim.longTermImpacts, { id: crypto.randomUUID(), text: t, span: 1 }])}
+                      onRemove={(id) => handleCellUpdate(selectedNeedId!, selectedAimId!, 'longTermImpacts', currentAim.longTermImpacts.filter(item => item.id !== id))}
+                      onUpdate={(id, t) => handleCellUpdate(selectedNeedId!, selectedAimId!, 'longTermImpacts', currentAim.longTermImpacts.map(old => old.id === id ? { ...old, text: t } : old))}
                     />
                   </div>
                 ) : (
@@ -572,7 +578,7 @@ const App: React.FC = () => {
               {viewMode === 'TABLE' ? (
                 <LogicTable data={logic} onJumpTo={jumpTo} />
               ) : (
-                <LogicDiagram data={logic} ref={diagramRef} />
+                <LogicDiagram data={logic} ref={diagramRef} onUpdate={setLogic} />
               )}
             </div>
           )}
