@@ -130,11 +130,34 @@ export const LogicDiagram = forwardRef<LogicDiagramHandle, LogicDiagramProps>(({
     if (!onUpdate) return;
     const newNeeds = [...data.needs];
     const newAim = { ...newNeeds[needIndex].aims[aimIndex] };
+    
+    const getColTotalRows = (f: keyof Aim) => {
+      const items = (newAim[f] as any[]) || [];
+      return items.reduce((sum, item) => sum + (item.span || 1), 0);
+    };
+
+    const currentHeight = getColTotalRows(field);
+    const detailCols = ['activities', 'inputs', 'outputs', 'shortTermImpacts', 'longTermImpacts'] as (keyof Aim)[];
+    const otherColsHeights = detailCols
+      .filter(f => f !== field)
+      .map(f => getColTotalRows(f));
+    const maxOtherHeight = Math.max(1, ...otherColsHeights);
+
     const items = [...(newAim[field] as any[])];
     const itemIndex = items.findIndex(it => it.id === itemId);
     if (itemIndex === -1) return;
     
-    const newSpan = Math.max(1, (items[itemIndex].span || 1) + delta);
+    const currentItemSpan = items[itemIndex].span || 1;
+    const newSpan = currentItemSpan + delta;
+
+    if (newSpan < 1) return;
+    
+    // Constraint: Do not allow increasing the span if it would push the Aim's total height 
+    // beyond what is already defined by the tallest other column in the same Aim.
+    if (delta > 0 && currentHeight >= maxOtherHeight) {
+      return; 
+    }
+
     items[itemIndex] = { ...items[itemIndex], span: newSpan };
     (newAim[field] as any[]) = items;
     
@@ -144,13 +167,15 @@ export const LogicDiagram = forwardRef<LogicDiagramHandle, LogicDiagramProps>(({
     onUpdate({ ...data, needs: newNeeds });
   };
 
-  const ControlButtons = ({ onUp, onDown, onPlus, onMinus, isFirst, isLast, vertical = false, horizontal = false }: { 
+  const ControlButtons = ({ onUp, onDown, onPlus, onMinus, isFirst, isLast, isPlusDisabled, isMinusDisabled, vertical = false, horizontal = false }: { 
     onUp?: () => void, 
     onDown?: () => void,
     onPlus?: () => void,
     onMinus?: () => void,
     isFirst?: boolean, 
     isLast?: boolean,
+    isPlusDisabled?: boolean,
+    isMinusDisabled?: boolean,
     vertical?: boolean,
     horizontal?: boolean
   }) => {
@@ -178,8 +203,9 @@ export const LogicDiagram = forwardRef<LogicDiagramHandle, LogicDiagramProps>(({
         {onPlus && (
           <button 
             onClick={(e) => { e.stopPropagation(); onPlus(); }} 
-            title="Increase Span"
-            className="bg-white text-nsw-teal hover:bg-nsw-teal hover:text-white p-1 rounded-full shadow-md border border-nsw-grey-200 transition-all cursor-pointer"
+            disabled={isPlusDisabled}
+            title={isPlusDisabled ? "Locked: Cannot extend beyond Aim boundaries" : "Increase Span"}
+            className="bg-white text-nsw-teal hover:bg-nsw-teal hover:text-white p-1 rounded-full shadow-md border border-nsw-grey-200 disabled:opacity-30 disabled:cursor-not-allowed transition-all cursor-pointer"
           >
             <span className="material-symbols-outlined text-[14px]">add</span>
           </button>
@@ -187,8 +213,9 @@ export const LogicDiagram = forwardRef<LogicDiagramHandle, LogicDiagramProps>(({
         {onMinus && (
           <button 
             onClick={(e) => { e.stopPropagation(); onMinus(); }} 
+            disabled={isMinusDisabled}
             title="Decrease Span"
-            className="bg-white text-nsw-danger hover:bg-nsw-danger hover:text-white p-1 rounded-full shadow-md border border-nsw-grey-200 transition-all cursor-pointer"
+            className="bg-white text-nsw-danger hover:bg-nsw-danger hover:text-white p-1 rounded-full shadow-md border border-nsw-grey-200 disabled:opacity-30 disabled:cursor-not-allowed transition-all cursor-pointer"
           >
             <span className="material-symbols-outlined text-[14px]">remove</span>
           </button>
@@ -369,6 +396,12 @@ export const LogicDiagram = forwardRef<LogicDiagramHandle, LogicDiagramProps>(({
                       
                       items.forEach((item, i) => {
                         const itemSpan = item.span || 1;
+                        const currentColTotal = items.reduce((sum, it) => sum + (it.span || 1), 0);
+                        const otherHeights = detailCols
+                          .filter(c => c.key !== col.key)
+                          .map(c => getColTotalRows(c.key as keyof Aim));
+                        const maxOther = Math.max(1, ...otherHeights);
+
                         rows.push(
                           <div 
                             key={`detail-${aim.id}-${col.key}-${item.id}`}
@@ -387,6 +420,8 @@ export const LogicDiagram = forwardRef<LogicDiagramHandle, LogicDiagramProps>(({
                               onMinus={() => handleSpanChange(needIdx, aimIdx, col.key as keyof Aim, item.id, -1)}
                               isFirst={i === 0} 
                               isLast={i === items.length - 1} 
+                              isPlusDisabled={currentColTotal >= maxOther}
+                              isMinusDisabled={itemSpan <= 1}
                             />
                             {item.text}
                           </div>
