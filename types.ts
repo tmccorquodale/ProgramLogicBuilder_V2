@@ -1,12 +1,17 @@
+export interface LogicItem {
+  id: string;
+  text: string;
+  span?: number;
+}
 
 export interface Aim {
   id: string;
   description: string;
-  inputs: string[];
-  activities: string[];
-  outputs: string[];
-  shortTermImpacts: string[];
-  longTermImpacts: string[];
+  inputs: LogicItem[];
+  activities: LogicItem[];
+  outputs: LogicItem[];
+  shortTermImpacts: LogicItem[];
+  longTermImpacts: LogicItem[];
 }
 
 export interface Need {
