@@ -372,10 +372,11 @@ export const LogicDiagram = forwardRef<LogicDiagramHandle, LogicDiagramProps>(({
                         rows.push(
                           <div 
                             key={`detail-${aim.id}-${col.key}-${item.id}`}
-                            className={`col-start-${colIdx + 3} p-4 rounded-md text-[14px] leading-tight flex items-center relative group shadow-sm border ${col.color}`}
+                            className={`p-4 rounded-md text-[14px] leading-tight flex items-center relative group shadow-sm border ${col.color}`}
                             style={{ 
                               gridRow: `span ${itemSpan} / span ${itemSpan}`,
-                              gridRowStart: itemCurrentRow 
+                              gridRowStart: itemCurrentRow,
+                              gridColumnStart: colIdx + 3
                             }}
                           >
                             <ControlButtons 
@@ -399,10 +400,11 @@ export const LogicDiagram = forwardRef<LogicDiagramHandle, LogicDiagramProps>(({
                         rows.push(
                           <div 
                             key={`placeholder-${aim.id}-${col.key}`}
-                            className={`col-start-${colIdx + 3} opacity-0`}
+                            className="opacity-0"
                             style={{ 
                               gridRow: `span ${aimMaxItems - currentColRows} / span ${aimMaxItems - currentColRows}`,
-                              gridRowStart: itemCurrentRow 
+                              gridRowStart: itemCurrentRow,
+                              gridColumnStart: colIdx + 3
                             }}
                           />
                         );
