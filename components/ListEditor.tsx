@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { AutoTextarea } from './AutoTextarea';
 
 interface ListEditorProps {
   title: string;
@@ -58,16 +59,10 @@ export const ListEditor: React.FC<ListEditorProps> = ({
         <div className="space-y-3">
           {items.map((item) => (
             <div key={item.id} className="flex gap-3 items-start group animation-slide-up">
-              <textarea
+              <AutoTextarea
                 value={item.text}
-                onChange={(e) => onUpdate(item.id, e.target.value)}
+                onChange={(v) => onUpdate(item.id, v)}
                 className="flex-1 p-4 border border-nsw-grey-200 rounded-md bg-nsw-grey-50/50 hover:bg-white focus:bg-white focus:border-nsw-blue focus:ring-1 focus:ring-nsw-blue outline-none transition-all overflow-hidden resize-none h-auto min-h-[60px] font-medium leading-relaxed"
-                rows={1}
-                onInput={(e) => {
-                  const target = e.target as HTMLTextAreaElement;
-                  target.style.height = 'inherit';
-                  target.style.height = `${target.scrollHeight}px`;
-                }}
               />
               <button
                 onClick={() => onRemove(item.id)}
