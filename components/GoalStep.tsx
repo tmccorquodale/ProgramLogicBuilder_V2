@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { AutoTextarea } from './AutoTextarea';
 
 interface GoalStepProps {
   programName: string;
@@ -34,11 +35,12 @@ export const GoalStep: React.FC<GoalStepProps> = ({ programName, setProgramName,
         <p className="text-sm text-nsw-grey-400 font-medium leading-relaxed">
           In one sentence, what is the ultimate goal of this program? (e.g. to increase the capacity and capability of the NSW Clinical Trials workforce)
         </p>
-        <textarea
+        <AutoTextarea
           value={goal}
-          onChange={(e) => setGoal(e.target.value)}
+          onChange={setGoal}
           placeholder="What is the primary overarching goal of this program?"
-          className="w-full h-40 text-lg p-4 border border-nsw-grey-300 rounded-md focus:border-nsw-blue focus:ring-1 focus:ring-nsw-blue outline-none transition-all resize-none"
+          className="w-full text-lg p-4 border border-nsw-grey-300 rounded-md focus:border-nsw-blue focus:ring-1 focus:ring-nsw-blue outline-none transition-all"
+          minHeight="160px"
         />
       </div>
     </div>
