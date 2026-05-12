@@ -1,12 +1,12 @@
 import React, { useRef, useEffect } from 'react';
 
-interface AutoTextareaProps {
+export type AutoTextareaProps = {
   value: string;
   onChange: (val: string) => void;
   className?: string;
   placeholder?: string;
   minHeight?: string;
-}
+};
 
 export const AutoTextarea: React.FC<AutoTextareaProps> = ({ 
   value, 
@@ -42,3 +42,5 @@ export const AutoTextarea: React.FC<AutoTextareaProps> = ({
     />
   );
 };
+
+export default AutoTextarea;
