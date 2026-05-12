@@ -224,6 +224,25 @@ export const LogicDiagram = forwardRef<LogicDiagramHandle, LogicDiagramProps>(({
     );
   };
 
+  const handleResetLayout = () => {
+    if (!onUpdate) return;
+    if (!confirm("This will reset all box sizes (spans) back to their default size. Continue?")) return;
+    
+    const newNeeds = data.needs.map((need: Need) => ({
+      ...need,
+      aims: need.aims.map((aim: Aim) => ({
+        ...aim,
+        activities: (aim.activities || []).map(i => ({ ...i, span: 1 })),
+        inputs: (aim.inputs || []).map(i => ({ ...i, span: 1 })),
+        outputs: (aim.outputs || []).map(i => ({ ...i, span: 1 })),
+        shortTermImpacts: (aim.shortTermImpacts || []).map(i => ({ ...i, span: 1 })),
+        longTermImpacts: (aim.longTermImpacts || []).map(i => ({ ...i, span: 1 }))
+      }))
+    }));
+    
+    onUpdate({ ...data, needs: newNeeds });
+  };
+
   const categories = [
     { title: 'Needs', key: 'needs' as const },
     { title: 'Aims', key: 'aims' as const },
@@ -246,7 +265,14 @@ export const LogicDiagram = forwardRef<LogicDiagramHandle, LogicDiagramProps>(({
       )}
 
       {onUpdate && (
-        <div className="flex items-center justify-end px-2">
+        <div className="flex items-center justify-end px-2 gap-3">
+          <button
+            onClick={handleResetLayout}
+            className="flex items-center gap-2 cursor-pointer bg-white px-3 py-1.5 rounded-full border border-nsw-grey-300 shadow-sm hover:bg-nsw-danger/5 hover:border-nsw-danger/50 hover:text-nsw-danger transition-all group"
+          >
+            <span className="material-symbols-outlined text-[14px] text-nsw-grey-400 group-hover:text-nsw-danger">settings_backup_restore</span>
+            <span className="text-[10px] font-black uppercase tracking-wider text-nsw-grey-400 group-hover:text-nsw-danger">Reset Layout</span>
+          </button>
           <label className="flex items-center gap-2 cursor-pointer bg-white px-3 py-1.5 rounded-full border border-nsw-grey-300 shadow-sm hover:bg-nsw-grey-50 transition-colors">
             <span className="text-[10px] font-black uppercase tracking-wider text-nsw-grey-400">Reordering Controls</span>
             <input 
